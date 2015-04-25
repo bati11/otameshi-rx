@@ -2,10 +2,21 @@ import rx.Observable;
 import rx.Observer;
 import rx.schedulers.Schedulers;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.stream.IntStream;
 
 public class Main {
     public static void main(String[] args) throws Exception {
+        http();
+    }
+
+    private static void http() throws IOException {
+        start(new StreamSample());
+    }
+
+    private static void hoge() {
         rangeObservable();
         System.out.println("\n############");
         myObservable();
@@ -94,4 +105,17 @@ public class Main {
         }
     }
 
+    private static void start(Sample sample) throws IOException {
+        BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        while (true) {
+            System.out.print("> ");
+            String s = new String(in.readLine());
+            if (s.equals("end")) {
+                break;
+            } else {
+                sample.exec("https://github.com/", s);
+            }
+        }
+        System.out.println("\nBye!");
+    }
 }
