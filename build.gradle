@@ -1,0 +1,38 @@
+def defaultEncoding = 'UTF-8'
+def jdkVersion = '1.8'
+
+apply plugin: 'java'
+apply plugin: 'idea'
+
+idea {
+    project {
+        jdkName = jdkVersion
+        languageLevel = jdkVersion
+    }
+}
+
+jar {
+    baseName = 'otameshi-rx'
+    version =  '0.0.1-SNAPSHOT'
+}
+
+compileJava {
+    options.encoding = defaultEncoding
+}
+compileTestJava {
+    options.encoding = defaultEncoding
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    compile('io.reactivex:rxjava:1.0.9')
+    compile('com.squareup.okhttp:okhttp:2.3.0')
+    testCompile('junit:junit:4.12')
+}
+
+task wrapper(type: Wrapper) {
+    gradleVersion = '2.3'
+}
