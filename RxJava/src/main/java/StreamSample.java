@@ -15,11 +15,10 @@ import java.util.stream.IntStream;
 
 public class StreamSample implements Sample {
     @Override
-    public void exec(String url, String s) throws IOException {
+    public void exec(List<String> urls) throws IOException {
         final Instant start = Instant.now();
-        int n = Integer.parseInt(s);
         Observable<Response> observable = Observable.empty();
-        for (int i = 0; i < n; i++) {
+        for (String url : urls) {
             observable = observable.concatWith(Observable.from(httpCall(url)));
         }
         observable

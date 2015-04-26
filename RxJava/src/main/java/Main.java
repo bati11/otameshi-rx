@@ -5,6 +5,8 @@ import rx.schedulers.Schedulers;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.stream.IntStream;
 
 public class Main {
@@ -107,13 +109,32 @@ public class Main {
 
     private static void start(Sample sample) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
+        List<String> urls = new ArrayList<>();
+        Sample client;
         while (true) {
             System.out.print("> ");
             String s = new String(in.readLine());
-            if (s.equals("end")) {
+            if (s.equalsIgnoreCase("singlesync")) {
+                client = new SingleSyncSample();
+                break;
+            } else if (s.equalsIgnoreCase("singleasync")) {
+                client = new SingleAsyncSample();
+                break;
+            } else if (s.equalsIgnoreCase("multisync")) {
+                client = new MultiSyncSample();
+                break;
+            } else if (s.equalsIgnoreCase("multiasync")) {
+                client = new MultiAsyncSample();
                 break;
             } else {
-                sample.exec("https://github.com/", s);
+                urls.add(s);
+            }
+        }
+        client.exec(urls);
+        while (true) {
+            String s = new String(in.readLine());
+            if (s.equals("end")) {
+                break;
             }
         }
         System.out.println("\nBye!");

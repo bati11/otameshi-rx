@@ -3,15 +3,17 @@ import com.squareup.okhttp.Request;
 import com.squareup.okhttp.Response;
 
 import java.io.IOException;
+import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
 public class SingleAsyncSample implements Sample {
 
     @Override
-    public void exec(String url, String s) throws IOException {
+    public void exec(List<String> urls) throws IOException {
+        final String url = urls.get(0);
         CompletableFuture<Response> future = httpCall(url);
         future.thenAccept(response -> {
-            System.out.println("[0] OK!");
+            System.out.println("[" + url + "] OK!");
         });
     }
 
