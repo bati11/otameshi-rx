@@ -26,7 +26,7 @@ public class SingleAsyncHttpClient implements HttpClient {
             try {
                 return client.newCall(request).execute();
             } catch (IOException e) {
-                throw new IllegalArgumentException(e);
+                throw new RuntimeException(e);
             }
         });
         return future;
