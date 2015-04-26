@@ -24,6 +24,9 @@ public class HttpSample {
             } else if (s.equalsIgnoreCase("multiasync")) {
                 client = new MultiAsyncHttpClient();
                 break;
+            } else if (s.equalsIgnoreCase("stream")) {
+                client = new StreamHttpClient();
+                break;
             } else {
                 urls.add(s);
             }
