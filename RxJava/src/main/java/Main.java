@@ -15,7 +15,7 @@ public class Main {
     }
 
     private static void http() throws IOException {
-        start(new StreamSample());
+        start(new StreamHttpClient());
     }
 
     private static void hoge() {
@@ -107,24 +107,24 @@ public class Main {
         }
     }
 
-    private static void start(Sample sample) throws IOException {
+    private static void start(HttpClient httpClient) throws IOException {
         BufferedReader in = new BufferedReader(new InputStreamReader(System.in));
         List<String> urls = new ArrayList<>();
-        Sample client;
+        HttpClient client;
         while (true) {
             System.out.print("> ");
             String s = new String(in.readLine());
             if (s.equalsIgnoreCase("singlesync")) {
-                client = new SingleSyncSample();
+                client = new SingleSyncHttpClient();
                 break;
             } else if (s.equalsIgnoreCase("singleasync")) {
-                client = new SingleAsyncSample();
+                client = new SingleAsyncHttpClient();
                 break;
             } else if (s.equalsIgnoreCase("multisync")) {
-                client = new MultiSyncSample();
+                client = new MultiSyncHttpClient();
                 break;
             } else if (s.equalsIgnoreCase("multiasync")) {
-                client = new MultiAsyncSample();
+                client = new MultiAsyncHttpClient();
                 break;
             } else {
                 urls.add(s);

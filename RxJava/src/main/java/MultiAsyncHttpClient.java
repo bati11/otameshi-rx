@@ -6,15 +6,15 @@ import java.io.IOException;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class SingleAsyncSample implements Sample {
-
+public class MultiAsyncHttpClient implements HttpClient {
     @Override
     public void exec(List<String> urls) throws IOException {
-        final String url = urls.get(0);
-        CompletableFuture<Response> future = httpCall(url);
-        future.thenAccept(response -> {
-            System.out.println("[" + url + "] OK!");
-        });
+        for (final String url : urls) {
+            CompletableFuture<Response>future = httpCall(url);
+            future.thenAccept(response -> {
+                System.out.println("[" + url + "] OK!");
+            });
+        }
     }
 
     private CompletableFuture<Response> httpCall(String url) {
@@ -31,5 +31,4 @@ public class SingleAsyncSample implements Sample {
         });
         return future;
     }
-
 }

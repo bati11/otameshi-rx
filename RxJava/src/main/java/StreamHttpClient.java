@@ -8,12 +8,10 @@ import rx.schedulers.Schedulers;
 import java.io.IOException;
 import java.time.Duration;
 import java.time.Instant;
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
-import java.util.stream.IntStream;
 
-public class StreamSample implements Sample {
+public class StreamHttpClient implements HttpClient {
     @Override
     public void exec(List<String> urls) throws IOException {
         final Instant start = Instant.now();
