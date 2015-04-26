@@ -11,13 +11,13 @@ import java.time.Instant;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
 
-public class StreamHttpClient implements HttpClient {
+public class StreamHttpClient extends HttpClient {
     @Override
     public void exec(List<String> urls) throws IOException {
         final Instant start = Instant.now();
         Observable<Response> observable = Observable.empty();
         for (String url : urls) {
-            observable = observable.concatWith(Observable.from(httpCall(url)));
+            observable = observable.concatWith(Observable.from(asyncHttpCall(url)));
         }
         observable
                 .subscribeOn(Schedulers.io())
