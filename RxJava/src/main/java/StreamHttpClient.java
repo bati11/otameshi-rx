@@ -22,7 +22,7 @@ public class StreamHttpClient extends HttpClient {
         observable
                 .subscribeOn(Schedulers.io())
                 .observeOn(Schedulers.computation())
-                .zipWith(Observable.range(1, 20), (r, i) -> new Pair<>(r, i))
+                .zipWith(Observable.from(urls), (r, url) -> new Pair<>(r, url))
                 .map(pair -> "[" + pair._2 + "] OK! ")
                 .subscribe(new Subscriber<String>() {
                     @Override
