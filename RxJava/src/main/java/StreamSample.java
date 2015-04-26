@@ -11,19 +11,22 @@ import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.CompletableFuture;
+import java.util.stream.IntStream;
 
 public class StreamSample implements Sample {
     @Override
     public void exec(String url, String s) throws IOException {
         final Instant start = Instant.now();
         int n = Integer.parseInt(s);
-        List<CompletableFuture<Response>> futures = new ArrayList<>();
+        Observable<Response> observable = Observable.empty();
         for (int i = 0; i < n; i++) {
-            futures.add(httpCall(url));
+            observable = observable.concatWith(Observable.from(httpCall(url)));
         }
-        Observable.range(0, n)
-                .subscribeOn(Schedulers.computation())
-                .flatMap(i -> Observable.from(futures.get(i)).map(response -> "[" + i + "] OK! "))
+        observable
+                .subscribeOn(Schedulers.io())
+                .observeOn(Schedulers.computation())
+                .zipWith(Observable.range(1, 20), (r, i) -> new Pair<>(r, i))
+                .map(pair -> "[" + pair._2 + "] OK! ")
                 .subscribe(new Subscriber<String>() {
                     @Override
                     public void onCompleted() {
