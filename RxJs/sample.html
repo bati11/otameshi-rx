@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>RxJs</title>
+  <script src="http://code.jquery.com/jquery-1.11.2.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/rxjs/2.5.2/rx.lite.js"></script>
+<script>
+$(function(){
+
+var inputObservable = Rx.Observable.fromEvent($('#user_name'), 'input');
+inputObservable.subscribe(function(e) {
+    var count = $('#user_name').val().length;
+    $('#count_text').html(count);
+  });
+inputObservable.subscribe(function(e) {
+    console.log("hoge");
+  });
+
+Rx.Observable.fromEvent($('#input_button'), 'click')
+  .map(function(e) {
+    var userName = $('#user_name').val();
+    if (userName) return userName
+    else return null
+  })
+  .filter(function(userName) {
+    return userName != null;
+  })
+  .flatMap(function(userName) {
+    return Rx.Observable.fromPromise($.getJSON("https://api.github.com/users/" + userName));
+  })
+  .subscribe(function(response) {
+    console.log(response);
+    $('#result_text').html(response.login);
+    $('#result_img').attr('src', response.avatar_url);
+  });
+
+});
+</script>
+</head>
+<body>
+  <p id="count_text"></p>
+  <input type="text" id="user_name" />
+  <input type="button" id="input_button" value="click!" />
+  <p id="result_text"></p>
+  <img id="result_img" />
+</body>
+</html>
